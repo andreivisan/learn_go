@@ -6,9 +6,11 @@
 
 2. [Official Docs](https://go.dev/doc/)
 
-3. [Exercism](https://exercism.org/tracks/go)
+3. [Effective Go](https://go.dev/doc/effective_go#blank_import)
 
-4. [FreeCodeCamp Roadmap](https://www.freecodecamp.org/news/golang-developer-roadmap/)
+4. [Exercism](https://exercism.org/tracks/go)
+
+5. [FreeCodeCamp Roadmap](https://www.freecodecamp.org/news/golang-developer-roadmap/)
 
 
 ## Installation
@@ -149,5 +151,22 @@ A return statement without arguments returns the named return values. This is kn
 Naked return statements should be used only in short functions, as with the example shown here. They can harm readability in longer functions.
 
 ### Variables
+
+The var statement declares a list of variables; as in function argument lists, the type is last.
+
+A var statement can be at package or function level. We see both in this example.
+
+```go
+package main
+
+import "fmt"
+
+var c, python, java bool
+
+func main() {
+	var i int
+	fmt.Println(i, c, python, java)
+}
+```
 
 
