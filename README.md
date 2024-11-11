@@ -18,3 +18,19 @@
 ```bash
 $ go version
 ```
+
+## Hello, GO
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, GO")
+}
+```
+
+### Running hello.go
+
+There are 2 options to run hello.go
