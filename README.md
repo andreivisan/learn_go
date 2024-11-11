@@ -12,7 +12,6 @@
 
 5. [FreeCodeCamp Roadmap](https://www.freecodecamp.org/news/golang-developer-roadmap/)
 
-
 ## Installation
 
 [Download and Install](https://go.dev/doc/install)
@@ -55,7 +54,7 @@ go build hello.go
 
 Every Go program is made up of packages.
 
-Programs start running in package ```main```.
+Programs start running in package `main`.
 
 ### Imports
 
@@ -117,7 +116,7 @@ func main() {
 
 When two or more consecutive named function parameters share a type, you can omit the type from all but the last.
 
-Thus ```x int, y int``` becomes ```x, y int```
+Thus `x int, y int` becomes `x, y int`
 
 ### Multiple results
 
@@ -169,4 +168,37 @@ func main() {
 }
 ```
 
+A var declaration can include initializers, one per variable.
 
+If an initializer is present, the type can be omitted; the variable will take the type of the initializer.
+
+```go
+package main
+
+import "fmt"
+
+var i, j int = 1, 2
+
+func main() {
+	var c, python, java = true, false, "no!"
+	fmt.Println(i, j, c, python, java)
+}
+```
+
+Inside a function, the := short assignment statement can be used in place of a var declaration with implicit type.
+
+Outside a function, every statement begins with a keyword (var, func, and so on) and so the := construct is not available.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var i, j int = 1, 2
+	k := 3
+	c, python, java := true, false, "no!"
+
+	fmt.Println(i, j, k, c, python, java)
+}
+```
