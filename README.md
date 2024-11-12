@@ -311,3 +311,176 @@ func main() {
 	fmt.Println(x, y, z)
 }
 ```
+
+### Constants
+
+Constants are declared like variables, but with the const keyword.
+
+Constants can be character, string, boolean, or numeric values.
+
+Constants cannot be declared using the := syntax.
+
+### Numeric Constants
+
+Numeric constants are high-precision values.
+
+An untyped constant takes the type needed by its context.
+
+Try printing needInt(Big) too.
+
+(An int can store at maximum a 64-bit integer, and sometimes less.)
+
+```go
+package main
+
+import "fmt"
+
+const (
+	// Create a huge number by shifting a 1 bit left 100 places.
+	// In other words, the binary number that is 1 followed by 100 zeroes.
+	Big = 1 << 100
+	// Shift it right again 99 places, so we end up with 1<<1, or 2.
+	Small = Big >> 99
+)
+
+func needInt(x int) int { return x*10 + 1 }
+func needFloat(x float64) float64 {
+	return x * 0.1
+}
+
+func main() {
+	fmt.Println(needInt(Small))
+	fmt.Println(needFloat(Small))
+	fmt.Println(needFloat(Big))
+}
+```
+
+## For
+
+Go has only one looping construct, the for loop.
+
+The basic for loop has three components separated by semicolons:
+
+	- the init statement: executed before the first iteration
+	- the condition expression: evaluated before every iteration
+	- the post statement: executed at the end of every iteration
+
+The init statement will often be a short variable declaration, and the variables declared there are visible only in the scope of the for statement.
+
+The loop will stop iterating once the boolean condition evaluates to false.
+
+Note: Unlike other languages like C, Java, or JavaScript there are no parentheses surrounding the three components of the for statement and the braces { } are always required.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	sum := 0
+	for i := 0; i < 10; i++ {
+		sum += i
+	}
+	fmt.Println(sum)
+}
+```
+
+The init and post statements are optional.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	sum := 1
+	for ; sum < 1000; {
+		sum += sum
+	}
+	fmt.Println(sum)
+}
+```
+
+### For is Go's "while"
+
+At that point you can drop the semicolons: C's while is spelled for in Go.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	sum := 1
+	for sum < 1000 {
+		sum += sum
+	}
+	fmt.Println(sum)
+}
+```
+
+### Forever
+
+If you omit the loop condition it loops forever, so an infinite loop is compactly expressed.
+
+```go
+package main
+
+func main() {
+	for {
+	}
+}
+```
+
+### If
+
+Go's if statements are like its for loops; the expression need not be surrounded by parentheses ( ) but the braces { } are required.
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func sqrt(x float64) string {
+	if x < 0 {
+		return sqrt(-x) + "i"
+	}
+	return fmt.Sprint(math.Sqrt(x))
+}
+
+func main() {
+	fmt.Println(sqrt(2), sqrt(-4))
+}
+```
+
+### If with a short statement
+
+Like for, the if statement can start with a short statement to execute before the condition.
+
+Variables declared by the statement are only in scope until the end of the if.
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func pow(x, n, lim float64) float64 {
+	if v := math.Pow(x, n); v < lim {
+		return v
+	}
+	return lim
+}
+
+func main() {
+	fmt.Println(
+		pow(3, 2, 10),
+		pow(3, 3, 20),
+	)
+}
+```
