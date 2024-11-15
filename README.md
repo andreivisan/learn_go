@@ -1798,6 +1798,211 @@ An empty interface may hold values of any type. (Every type implements at least 
 
 Empty interfaces are used by code that handles values of unknown type. For example, fmt.Print takes any number of arguments of type interface{}.
 
+### Type assertions
+
+A type assertion provides access to an interface value's underlying concrete value.
+
+```
+t := i.(T)
+```
+
+This statement asserts that the interface value i holds the concrete type T and assigns the underlying T value to the variable t.
+
+If i does not hold a T, the statement will trigger a panic.
+
+To test whether an interface value holds a specific type, a type assertion can return two values: the underlying value and a boolean value that reports whether the assertion succeeded.
+
+```
+t, ok := i.(T)
+```
+
+If i holds a T, then t will be the underlying value and ok will be true.
+
+If not, ok will be false and t will be the zero value of type T, and no panic occurs.
+
+Note the similarity between this syntax and that of reading from a map.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var i interface{} = "hello"
+
+	s := i.(string)
+	fmt.Println(s)
+
+	s, ok := i.(string)
+	fmt.Println(s, ok)
+
+	f, ok := i.(float64)
+	fmt.Println(f, ok)
+
+	f = i.(float64) // panic
+	fmt.Println(f)
+}
+```
+
+will return 
+
+```
+hello
+hello true
+0 false
+panic: interface conversion: interface {} is string, not float64
+
+goroutine 1 [running]:
+main.main()
+	/tmp/sandbox976713470/prog.go:17 +0x14f
+```
+
+### Type switches
+
+A type switch is a construct that permits several type assertions in series.
+
+A type switch is like a regular switch statement, but the cases in a type switch specify types (not values), and those values are compared against the type of the value held by the given interface value.
+
+```
+switch v := i.(type) {
+case T:
+    // here v has type T
+case S:
+    // here v has type S
+default:
+    // no match; here v has the same type as i
+}
+```
+
+The declaration in a type switch has the same syntax as a type assertion i.(T), but the specific type T is replaced with the keyword type.
+
+This switch statement tests whether the interface value i holds a value of type T or S. In each of the T and S cases, the variable v will be of type T or S respectively and hold the value held by i. In the default case (where there is no match), the variable v is of the same interface type and value as i.
+
+```go
+package main
+
+import "fmt"
+
+func do(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Printf("Twice %v is %v\n", v, v*2)
+	case string:
+		fmt.Printf("%q is %v bytes long\n", v, len(v))
+	default:
+		fmt.Printf("I don't know about type %T!\n", v)
+	}
+}
+
+func main() {
+	do(21)
+	do("hello")
+	do(true)
+}
+```
+
+will return 
+
+```
+Twice 21 is 42
+"hello" is 5 bytes long
+I don't know about type bool!
+```
+
+###  Stringers
+One of the most ubiquitous interfaces is Stringer defined by the fmt package.
+
+```
+type Stringer interface {
+    String() string
+}
+```
+
+A Stringer is a type that can describe itself as a string. The fmt package (and many others) look for this interface to print values.
+
+```go
+package main
+
+import "fmt"
+
+type Person struct {
+	Name string
+	Age  int
+}
+
+func (p Person) String() string {
+	return fmt.Sprintf("%v (%v years)", p.Name, p.Age)
+}
+
+func main() {
+	a := Person{"Arthur Dent", 42}
+	z := Person{"Zaphod Beeblebrox", 9001}
+	fmt.Println(a, z)
+}
+```
+
+### Errors
+
+Go programs express error state with error values.
+
+The error type is a built-in interface similar to fmt.Stringer:
+
+```
+type error interface {
+    Error() string
+}
+```
+
+(As with fmt.Stringer, the fmt package looks for the error interface when printing values.)
+
+Functions often return an error value, and calling code should handle errors by testing whether the error equals nil.
+
+```
+i, err := strconv.Atoi("42")
+if err != nil {
+    fmt.Printf("couldn't convert number: %v\n", err)
+    return
+}
+fmt.Println("Converted integer:", i)
+```
+
+A nil error denotes success; a non-nil error denotes failure.
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+type MyError struct {
+	When time.Time
+	What string
+}
+
+func (e *MyError) Error() string {
+	return fmt.Sprintf("at %v, %s",
+		e.When, e.What)
+}
+
+func run() error {
+	return &MyError{
+		time.Now(),
+		"it didn't work",
+	}
+}
+
+func main() {
+	if err := run(); err != nil {
+		fmt.Println(err)
+	}
+}
+```
+
+
+
+
 
 
 
