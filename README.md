@@ -2078,6 +2078,171 @@ func main() {
 }
 ```
 
+## Generics
+
+### Type parameters
+
+Go functions can be written to work on multiple types using type parameters. The type parameters of a function appear between brackets, before the function's arguments.
+
+```
+func Index[T comparable](s []T, x T) int
+```
+
+This declaration means that s is a slice of any type T that fulfills the built-in constraint comparable. x is also a value of the same type.
+
+```comparable``` is a useful constraint that makes it possible to use the == and != operators on values of the type. In this example, we use it to compare a value to all slice elements until a match is found. This Index function works for any type that supports comparison.
+
+```go
+package main
+
+import "fmt"
+
+// Index returns the index of x in s, or -1 if not found.
+func Index[T comparable](s []T, x T) int {
+	for i, v := range s {
+		// v and x are type T, which has the comparable
+		// constraint, so we can use == here.
+		if v == x {
+			return i
+		}
+	}
+	return -1
+}
+
+func main() {
+	// Index works on a slice of ints
+	si := []int{10, 20, 15, -10}
+	fmt.Println(Index(si, 15))
+
+	// Index also works on a slice of strings
+	ss := []string{"foo", "bar", "baz"}
+	fmt.Println(Index(ss, "hello"))
+}
+```
+
+### Generic types
+
+In addition to generic functions, Go also supports generic types. A type can be parameterized with a type parameter, which could be useful for implementing generic data structures.
+
+This example demonstrates a simple type declaration for a singly-linked list holding any type of value.
+
+```go
+package main
+
+import "fmt"
+
+// List represents a singly-linked list that holds
+// values of any type.
+type List[T any] struct {
+	next *List[T]
+	val  T
+}
+
+func main() {
+	node_3 := &List[int]{nil, 3}
+	node_2 := &List[int]{node_3, 2}
+	node_1 := &List[int]{node_2, 1}
+	
+	current_node := node_1
+	for current_node != nil {
+		fmt.Println(current_node)
+		current_node = current_node.next
+	}
+}
+```
+
+- Once you specify a type parameter T, all instances of List[T] must use the same T.
+
+- The next pointer in List[T] must point to *List[T], meaning the next node must have the same type T.
+
+## Goroutines
+
+A goroutine is a lightweight thread managed by the Go runtime.
+
+```
+go f(x, y, z)
+```
+
+starts a new goroutine running
+
+```
+f(x, y, z)
+```
+
+The evaluation of f, x, y, and z happens in the current goroutine and the execution of f happens in the new goroutine.
+
+Goroutines run in the same address space, so access to shared memory must be synchronized. The sync package provides useful primitives, although you won't need them much in Go as there are other primitives. (See the next slide.)
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func say(s string) {
+	for i := 0; i < 5; i++ {
+		time.Sleep(100 * time.Millisecond)
+		fmt.Println(s)
+	}
+}
+
+func main() {
+	go say("world")
+	say("hello")
+}
+```
+
+## Channels
+
+Channels are a typed conduit through which you can send and receive values with the channel operator, <-.
+
+```
+ch <- v    // Send v to channel ch.
+v := <-ch  // Receive from ch, and
+           // assign value to v.
+```
+
+(The data flows in the direction of the arrow.)
+
+Like maps and slices, channels must be created before use:
+
+```
+ch := make(chan int)
+```
+
+By default, sends and receives block until the other side is ready. This allows goroutines to synchronize without explicit locks or condition variables.
+
+The example code sums the numbers in a slice, distributing the work between two goroutines. Once both goroutines have completed their computation, it calculates the final result.
+
+```go
+package main
+
+import "fmt"
+
+func sum(s []int, c chan int) {
+	sum := 0
+	for _, v := range s {
+		sum += v
+	}
+	c <- sum // send sum to c
+}
+
+func main() {
+	s := []int{7, 2, 8, -9, 4, 0}
+
+	c := make(chan int)
+	go sum(s[:len(s)/2], c)
+	go sum(s[len(s)/2:], c)
+	x, y := <-c, <-c // receive from c
+
+	fmt.Println(x, y, x+y)
+}
+```
+
+
+
 
 
 
