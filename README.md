@@ -2271,7 +2271,7 @@ func main() {
 
 ### Select
 
-The select statement lets a goroutine wait on multiple communication operations.
+The select statement lets a goroutine wait on multiple communication operations. This means that we can listen to multiple channels in the same time and which one is ready first is the one that will be executed.
 
 A select blocks until one of its cases can run, then it executes that case. It chooses one at random if multiple are ready.
 
@@ -2308,6 +2308,9 @@ func main() {
 
 In the example above we use an anonymous functions to start a go routine that writes to the channel in the same time
 as the main function reads from the channel through the fibonacci function. Like this, the write and read operations are running concurrently. Otherwise if this happens sequentially, the program would block because the main function would wait for the fibonacci function to finish writing to the channel before it can read from it. This is causing a deadlock.
+
+So, nothing is stored in the channel. The channel is just like a queue that synchronizes back the go routines.
+If we want to store, we use buffered channels.
 
 ### Synchronization Between Goroutines
 
