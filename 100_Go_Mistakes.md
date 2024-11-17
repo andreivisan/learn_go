@@ -81,4 +81,22 @@ if err != nil {
 Align the happy path to the left; you should quickly be able to scan down one column to
 see the expected execution flow.
 
+- Use happy path aligned to the left, avoid nesting.
+
+### 2.3: Misusing init functions
+
+An init function is a function used to initialize the state of an application. It takes no
+arguments and returns no result (a func() function). When a package is initialized,
+all the constant and variable declarations in the package are evaluated. Then, the init
+functions are executed. 
+
+If we have one package depending on another and both declare an init function, let’s say package main depends on redis, then the init() method in the redis package is called first since main depends on it, then the init function in main package is executed.
+
+We can define multiple init functions per package. When we do, the execution
+order of the init function inside the package is based on the source files’ alphabetical
+order. For example, if a package contains an a.go file and a b.go file and both have an
+init function, the a.go init function is executed first.
+
+ 
+
 

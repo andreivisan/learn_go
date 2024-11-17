@@ -2447,6 +2447,10 @@ func main() {
 }
 ```
 
+## Book summaries
+
+1. [100 Go Mistakes](100_Go_Mistakes.md)
+
 
 
 
