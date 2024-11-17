@@ -97,6 +97,41 @@ order of the init function inside the package is based on the source files’ al
 order. For example, if a package contains an a.go file and a b.go file and both have an
 init function, the a.go init function is executed first.
 
+We shouldn’t rely on the ordering of init functions within a package. Indeed, it can be
+dangerous as source files can be renamed, potentially impacting the execution order.
+
+We can initialize packages (calling their init function) when we import them. We can do that by using the ```_``` operator this way:
+
+```go
+package main
+
+import (
+    “fmt”
+    _ “foo”
+)
+```
+
+- One mistake is opening a DB connection in the init function.
+    
+    - Error management in an init function is limited. Indeed, as an init function doesn’t return an error, one of the only ways to signal an error is to panic, leading the application to be stopped.
+    
+    - Another important downside is related to testing. If we add tests to this file, the init
+function will be executed before running the test cases, which isn’t necessarily what
+we want (for example, if we add unit tests on a utility function that doesn’t require this
+connection to be created).
+    
+    - The last downside is that the example requires assigning the database connection pool to a global variable. Global variables have some severe drawbacks; for example:
+        
+        - Any functions can alter global variables within the package.
+        
+        - Unit tests can be more complicated because a function that depends on a global variable won’t be isolated anymore.
+
+In most cases, we should favor encapsulating a variable rather than keeping it global.
+
+ 
+
+
+
  
 
 
