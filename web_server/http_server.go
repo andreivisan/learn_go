@@ -11,7 +11,8 @@ func main() {
 	mux := http.NewServeMux()
 
 	// Register handler functions
-	mux.Handle("/", http.FileServer(http.Dir(".")))
+	mux.Handle("/app/", http.StripPrefix("/app", http.FileServer(http.Dir("."))))
+	mux.HandleFunc("/healthz", health_handler)
 
 	server := &http.Server{
 		Addr:         ":8080",
@@ -27,4 +28,10 @@ func main() {
 	if err != nil {
 		fmt.Printf("Could not listen on %s: %v\n", server.Addr, err)
 	}
+}
+
+func health_handler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("OK"))
 }
