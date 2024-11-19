@@ -4,13 +4,21 @@
 
 1. [A Tour of Go](https://go.dev/tour/list)
 
-2. [Official Docs](https://go.dev/doc/)
+2. [Go by Example](https://gobyexample.com/)
 
 3. [Effective Go](https://go.dev/doc/effective_go#blank_import)
 
-4. [Exercism](https://exercism.org/tracks/go)
+4. [Lets-Go](https://lets-go.alexedwards.net/#packages)
 
-5. [FreeCodeCamp Roadmap](https://www.freecodecamp.org/news/golang-developer-roadmap/)
+5. [Lets-Go-Further](https://lets-go-further.alexedwards.net/#packages)
+
+6. [Learn Go With Tests](https://quii.gitbook.io/learn-go-with-tests)
+
+7. [Official Docs](https://go.dev/doc/)
+
+8. [Exercism](https://exercism.org/tracks/go)
+
+9. [FreeCodeCamp Roadmap](https://www.freecodecamp.org/news/golang-developer-roadmap/)
 
 ## Installation
 
