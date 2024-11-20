@@ -2493,7 +2493,9 @@ default in the switch case will be branched to if none of the other case stateme
 
 The function name starts with a lowercase letter. In Go, public functions start with a capital letter, and private ones start with a lowercase letter. We don't want the internals of our algorithm exposed to the world, so we made this function private.
 
+Example functions are compiled whenever tests are executed. Because such examples are validated by the Go compiler, you can be confident your documentation's examples always reflect current code behavior.
 
+Notice the special format of the comment, // Output: 6. While the example will always be compiled, adding this comment means the example will also be executed. Go ahead and temporarily remove the comment // Output: 6, then run go test, and you will see ExampleAdd is no longer executed.
 
 
 
