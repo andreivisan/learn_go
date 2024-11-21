@@ -2497,6 +2497,26 @@ Example functions are compiled whenever tests are executed. Because such example
 
 Notice the special format of the comment, // Output: 6. While the example will always be compiled, adding this comment means the example will also be executed. Go ahead and temporarily remove the comment // Output: 6, then run go test, and you will see ExampleAdd is no longer executed.
 
+## Benchmarking
+
+Writing benchmarks in Go is another first-class feature of the language and it is very similar to writing tests.
+
+```go
+func BenchmarkRepeat(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Repeat("a")
+	}
+}
+```
+
+The testing.B gives you access to the cryptically named b.N.
+
+When the benchmark code is executed, it runs b.N times and measures how long it takes.
+
+The amount of times the code is run shouldn't matter to you, the framework will determine what is a "good" value for that to let you have some decent results.
+
+To run the benchmarks do go test -bench=. (or if you're in Windows Powershell go test -bench=".")
+
 
 
 
