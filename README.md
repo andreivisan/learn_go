@@ -2517,6 +2517,10 @@ The amount of times the code is run shouldn't matter to you, the framework will 
 
 To run the benchmarks do go test -bench=. (or if you're in Windows Powershell go test -bench=".")
 
+## Deep Equal
 
+Go does not let you use equality operators with slices. You could write a function to iterate over each got and want slice and check their values but for convenience sake, we can use reflect.DeepEqual which is useful for seeing if any two variables are the same.
+
+It's important to note that reflect.DeepEqual is not "type safe" - the code will compile even if you did something a bit silly.
 
 
