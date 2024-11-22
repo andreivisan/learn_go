@@ -2523,4 +2523,29 @@ Go does not let you use equality operators with slices. You could write a functi
 
 It's important to note that reflect.DeepEqual is not "type safe" - the code will compile even if you did something a bit silly.
 
+## Table Driven Test
+
+Table driven tests are useful when you want to build a list of test cases that can be tested in the same manner.
+
+```go
+func TestArea(t *testing.T) {
+
+	areaTests := []struct {
+		shape Shape
+		want  float64
+	}{
+		{Rectangle{12, 6}, 72.0},
+		{Circle{10}, 314.1592653589793},
+	}
+
+	for _, tt := range areaTests {
+		got := tt.shape.Area()
+		if got != tt.want {
+			t.Errorf("got %g want %g", got, tt.want)
+		}
+	}
+
+}
+```
+Table driven tests can be a great item in your toolbox, but be sure that you have a need for the extra noise in the tests. They are a great fit when you wish to test various implementations of an interface, or if the data being passed in to a function has lots of different requirements that need testing.
 
