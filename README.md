@@ -1260,6 +1260,18 @@ Note: If elem or ok have not yet been declared you could use a short declaration
 elem, ok := m[key]
 ```
 
+An interesting property of maps is that you can modify them without passing as an address to it (e.g &myMap).
+
+A map value is a pointer to a runtime.hmap structure.
+
+So when you pass a map to a function/method, you are indeed copying it, but just the pointer part, not the underlying data structure that contains the data.
+
+A gotcha with maps is that they can be a nil value. A nil map behaves like an empty map when reading, but attempts to write to a nil map will cause a runtime panic.
+
+Therefore, you should never initialize a nil map variable.
+
+Instead, you can initialize an empty map or use the make keyword to create a map for you.
+
 ## Function values
 
 Functions are values too. They can be passed around just like other values.
