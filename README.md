@@ -2214,6 +2214,8 @@ func main() {
 }
 ```
 
+Go can help us to spot race conditions with its built in race detector. To enable this feature, run the tests with the race flag: go test -race.
+
 ## Channels
 
 Channels are a typed conduit through which you can send and receive values with the channel operator, <-.
