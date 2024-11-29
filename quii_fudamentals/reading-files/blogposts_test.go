@@ -1,6 +1,7 @@
 package blogposts_test
 
 import (
+	blogposts "https://github.com/andreivisan/learn_go/tree/master/quii_fudamentals/reading-files"
 	"testing"
 	"testing/fstest"
 )
