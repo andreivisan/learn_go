@@ -64,7 +64,6 @@ func sumDigitsAndLiterals(line string) int {
             }
         }
     }
-    fmt.Println(nums)
     return nums[0] * 10 + nums[len(nums) - 1]
 }
 
