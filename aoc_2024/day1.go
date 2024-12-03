@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"sort"
@@ -58,7 +57,7 @@ func mapOccurences(l1 []int, l2 []int) map[int]int {
     return countOcc
 }
 
-func absInt(n int) int {
+func AbsInt(n int) int {
     if n < 0 {
         return -n
     }
@@ -81,10 +80,4 @@ func Day1_2(l1 []int, l2 []int) int {
         sum += num * countOcc[num]
     }
     return sum
-}
-
-func main() {
-    l1, l2 := ReadFile("input_d1.txt")
-    fmt.Println(Day1_1(l1, l2))
-    fmt.Println(Day1_2(l1, l2))
 }
