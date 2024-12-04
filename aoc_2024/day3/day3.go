@@ -16,6 +16,18 @@ func Day3_1(fileName string) int {
     content := string(data)
     re := regexp.MustCompile(`mul\((\d+),(\d+)\)`)
     matches := re.FindAllStringSubmatch(content, -1)
+    return computeResult(matches)
+}
+
+func getFileContent(fileName string) string {
+    data, err := os.ReadFile(fileName)
+    if err != nil {
+        log.Fatal(err)
+    }
+    return string(data)
+}
+
+func computeResult(matches [][]string) int {
     sum := 0
     for _, match := range matches {
         val1, _ := strconv.Atoi(match[1]) 
