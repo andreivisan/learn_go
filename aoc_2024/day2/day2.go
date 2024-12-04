@@ -34,7 +34,7 @@ func IsLevelSafe(fields []string) bool {
         nums = append(nums, num)
         lenNums := len(nums)
         if lenNums > 1 {
-            if !isSorted(nums) || AbsIntt(nums[lenNums-1]-nums[lenNums-2]) > 3 {
+            if !isSorted(nums) || absInt(nums[lenNums-1]-nums[lenNums-2]) > 3 {
                 return false
             }  
         }
@@ -42,7 +42,7 @@ func IsLevelSafe(fields []string) bool {
     return true
 }
 
-func AbsIntt(n int) int {
+func absInt(n int) int {
     if n < 0 {
         return -n
     }
