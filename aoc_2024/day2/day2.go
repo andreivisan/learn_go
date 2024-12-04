@@ -20,7 +20,7 @@ func Day2_1(fileName string) int {
     for fileScanner.Scan() {
         line := fileScanner.Text()
         fields := strings.Fields(line) 
-        if IsLevelSafe(fields) {
+        if IsLevelSafe(fields) || canRemoveAtMost1(fields) {
             total += 1
         }
     }
@@ -40,6 +40,17 @@ func IsLevelSafe(fields []string) bool {
         }
     }
     return true
+}
+
+func canRemoveAtMost1(fields []string) bool {
+    for i:=0; i < len(fields); i++ {
+        fieldsCopy := append([]string{}, fields[:i]...)
+        fieldsCopy = append(fieldsCopy, fields[i+1:]...)
+        if IsLevelSafe(fieldsCopy) {
+            return true
+        }
+    } 
+    return false
 }
 
 func absInt(n int) int {
