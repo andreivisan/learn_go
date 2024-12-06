@@ -8,6 +8,7 @@ import (
 )
 
 func Day4_1(fileName string) int {
+    grid := readGrid(fileName)
     directions := []struct{dx, dy int}{
         {-1, 0},  //up
         {-1, 1},  //up-right
@@ -18,7 +19,6 @@ func Day4_1(fileName string) int {
         {0, -1},  //left
         {-1, -1}, //up-left
     } 
-    grid := readGrid(fileName)
     count := 0
     lenRows := len(grid)
     lenCols := len(grid[0])
@@ -32,6 +32,43 @@ func Day4_1(fileName string) int {
         }
     }
     return count
+}
+
+func Day4_2(fileName string) int {
+    grid := readGrid(fileName)
+    count := 0
+    lenRows := len(grid)
+    lenCols := len(grid[0])
+    for i:=0; i<lenRows; i++ {
+        for j:=0; j<lenCols; j++ {
+            if(hasMasX(grid, i, j)){
+                count += 1
+            }
+        }
+    }
+    return count
+}
+
+func hasMasX(grid [][]rune, i, j int) bool {
+    if i < 1 || i >= len(grid)-1 || j < 1 || j >= len(grid[0])-1 {
+        return false
+    }
+    if grid[i][j] != rune('A') {
+        return false
+    }
+    posibilities := []string{"MS", "SM"}
+    diag1 := string(grid[i-1][j-1]) + string(grid[i+1][j+1])
+    diag2 := string(grid[i-1][j+1]) + string(grid[i+1][j-1])
+    return containsString(posibilities, diag1) && containsString(posibilities, diag2)
+}
+
+func containsString(slice []string, str string) bool {
+    for _, item := range slice {
+        if item == str {
+            return true
+        }
+    }
+    return false
 }
 
 func isXmas(grid [][]rune, i, j, dx, dy int, word string) bool {
@@ -67,5 +104,5 @@ func readGrid(fileName string) [][]rune {
 }
 
 func main() {
-    fmt.Println(Day4_1("input_d4.txt"))
+    fmt.Println(Day4_2("input_d4.txt"))
 }
